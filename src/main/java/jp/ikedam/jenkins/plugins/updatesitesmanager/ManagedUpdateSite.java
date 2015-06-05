@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,6 +44,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import javax.annotation.Nonnull;
 
 /**
  * Extended UpdateSite to be managed in UpdateSitesManager.
@@ -172,7 +175,18 @@ public class ManagedUpdateSite extends DescribedUpdateSite
         this.note = note;
         this.disabled = disabled;
     }
-    
+
+    @Override
+    public Future<FormValidation> updateDirectly(boolean signatureCheck) {
+        return super.updateDirectly(false);
+    }
+
+    @Nonnull
+    @Override
+    public FormValidation updateDirectlyNow(boolean signatureCheck) throws IOException {
+        return super.updateDirectlyNow(false);
+    }
+
     /**
      * Process update-center.json.
      * 
